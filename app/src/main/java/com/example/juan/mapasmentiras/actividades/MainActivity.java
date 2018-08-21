@@ -1,5 +1,6 @@
 package com.example.juan.mapasmentiras.actividades;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,13 +15,14 @@ import android.view.MenuItem;
 
 import com.example.juan.mapasmentiras.R;
 import com.example.juan.mapasmentiras.entidades.AllFragments;
+import com.example.juan.mapasmentiras.entidades.Puente;
 import com.example.juan.mapasmentiras.fragments.Hoteles;
 import com.example.juan.mapasmentiras.fragments.Inicio;
 import com.example.juan.mapasmentiras.fragments.Restaurantes;
 import com.example.juan.mapasmentiras.fragments.Sitios;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,AllFragments {
+        implements NavigationView.OnNavigationItemSelectedListener,AllFragments,Puente {
 
 
     Fragment fragment;
@@ -114,5 +116,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void pantalla(int numero) {
+        Intent miIntent=new Intent(MainActivity.this,MapsActivity.class);
+        startActivity(miIntent);
     }
 }

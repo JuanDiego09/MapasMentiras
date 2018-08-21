@@ -1,5 +1,7 @@
 package com.example.juan.mapasmentiras.entidades;
 
+import android.graphics.drawable.Drawable;
+
 public class LugaresVo {
 
     private String nombre;
@@ -55,7 +57,7 @@ public class LugaresVo {
         return imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(byte imagen) {
         this.imagen = imagen;
     }
 }

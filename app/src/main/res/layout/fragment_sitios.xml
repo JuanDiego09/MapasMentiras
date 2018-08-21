@@ -6,14 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Sitios">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerSitios"
         android:layout_width="match_parent"
-        android:textSize="33dp"
-        android:textColor="#000"
-        android:gravity="center_horizontal"
-        android:layout_height="match_parent"
-        android:text="SITIOS" />
+        android:layout_height="wrap_content"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+
+    </android.support.v7.widget.RecyclerView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnFlotanteSitios"

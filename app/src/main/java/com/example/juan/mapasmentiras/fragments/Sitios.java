@@ -1,16 +1,23 @@
 package com.example.juan.mapasmentiras.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.juan.mapasmentiras.R;
+import com.example.juan.mapasmentiras.adapter.Adapter;
+import com.example.juan.mapasmentiras.entidades.LugaresVo;
+import com.example.juan.mapasmentiras.entidades.Puente;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +38,12 @@ public class Sitios extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    RecyclerView recyclerView;
+    ArrayList<LugaresVo> listaLugares;
+    LugaresVo lugaresVo;
+    Puente miPuente;
+    Activity activity;
 
     public Sitios() {
         // Required empty public constructor
@@ -68,16 +81,28 @@ public class Sitios extends Fragment {
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_sitios, container, false);
 
+        recyclerView=vista.findViewById(R.id.recyclerSitios);
+        listaLugares=new ArrayList<>();
+
+        llenarArray();
+
         FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.btnFlotanteSitios);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                miPuente.pantalla(1);
             }
         });
 
         return vista;
+    }
+
+    private void llenarArray() {
+        listaLugares.add(lugaresVo=new LugaresVo("Lugar 1","Descripcion Corta","Descripcion Larga","Ubicacion",R.drawable.interrogacion));
+        Adapter miAdapter=new Adapter(listaLugares);
+        recyclerView.setAdapter(miAdapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +115,11 @@ public class Sitios extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (context instanceof Activity){
+            this.activity=(Activity) context;
+            miPuente=(Puente) activity;
+        }
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

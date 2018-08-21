@@ -8,14 +8,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.juan.mapasmentiras.R;
+import com.example.juan.mapasmentiras.entidades.LugaresVo;
+
+import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.AdapterHolderView> implements View.OnClickListener {
 
 
+    ArrayList<LugaresVo> listaLugares;
     View.OnClickListener listener;
 
-    public Adapter(View.OnClickListener listener) {
-        this.listener = listener;
+    public Adapter(ArrayList<LugaresVo> listaLugares) {
+        this.listaLugares = listaLugares;
     }
 
     @Override
@@ -27,12 +31,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterHolderView> imp
 
     @Override
     public void onBindViewHolder(AdapterHolderView holder, int position) {
-
+        holder.imagen.setImageResource(listaLugares.get(position).getImagen());
+        holder.nombre.setText(listaLugares.get(position).getNombre());
+        holder.descripcion.setText(listaLugares.get(position).getDescripcionCorta());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return listaLugares.size();
     }
 
     public void setOnClickListener(View.OnClickListener listener){
@@ -40,6 +46,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterHolderView> imp
     }
     @Override
     public void onClick(View view) {
+        if (listener!=null){
+            listener.onClick(view);
+        }
 
     }
 
@@ -48,6 +57,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterHolderView> imp
         TextView nombre,descripcion,ubicacion;
         public AdapterHolderView(View itemView) {
             super(itemView);
+            imagen=itemView.findViewById(R.id.campoImagen);
+            nombre=itemView.findViewById(R.id.nombre);
+            descripcion=itemView.findViewById(R.id.descripcionCorta);
+            ubicacion=itemView.findViewById(R.id.ubicacion);
         }
     }
 }
