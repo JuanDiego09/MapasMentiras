@@ -1,11 +1,11 @@
-package com.example.juan.mapasmentiras;
+package com.example.juan.mapasmentiras.actividades;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.juan.mapasmentiras.clases.MainActivity;
+import com.example.juan.mapasmentiras.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -20,7 +20,6 @@ public class SplashActivity extends AppCompatActivity {
             public void onTick(long l) {
 
             }
-
             @Override
             public void onFinish() {
                 Intent miIntent=new Intent(SplashActivity.this,MainActivity.class);
