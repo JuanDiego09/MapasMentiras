@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fragment=new Inicio();
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
     }
 
     @Override
@@ -94,21 +97,18 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             fragment = new Inicio();
             setTitle("Inicio");
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
         } else if (id == R.id.nav_gallery) {
             fragment = new Sitios();
             setTitle("Sitios");
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
         } else if (id == R.id.nav_slideshow) {
             fragment = new Hoteles();
             setTitle("Hoteles");
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
         } else if (id == R.id.nav_manage) {
             fragment = new Restaurantes();
             setTitle("Restaurantes");
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
         }
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

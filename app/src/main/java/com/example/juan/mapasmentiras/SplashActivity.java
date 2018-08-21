@@ -5,6 +5,8 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.juan.mapasmentiras.clases.MainActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
