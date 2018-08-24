@@ -150,8 +150,11 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void registroSitios() {
-
         db = conn.getWritableDatabase();
+        db=conn.getReadableDatabase();
+
+        db.delete(Utilidades.CREAR_TABLA_SITIOS,"")
+
         ContentValues values = new ContentValues();
         for (int i = 0; i < listaLugares.size(); i++) {
             values.put(Utilidades.SITIOS_DESCRIPCION_LARGA, listaLugares.get(i).getDescripcionLarga());
