@@ -2,8 +2,11 @@ package com.example.juan.mapasmentiras.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.juan.mapasmentiras.MapsActivity2;
 import com.example.juan.mapasmentiras.R;
 import com.example.juan.mapasmentiras.entidades.LugaresVo;
 import com.example.juan.mapasmentiras.entidades.Puente;
@@ -83,6 +87,18 @@ public class DetalleFragment extends Fragment {
         LugaresVo miLugaresVo= (LugaresVo) miBundle.getSerializable("objeto");
 
         descripcion=view.findViewById(R.id.txtLarga);
+
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.btnFlotanteSitios);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), MapsActivity2.class);
+                startActivity(intent);
+            }
+        });
 
         descripcion.setText(miLugaresVo.getDescripcionLarga());
         return view;
