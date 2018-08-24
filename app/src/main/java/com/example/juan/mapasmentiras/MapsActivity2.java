@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -46,6 +47,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        request = Volley.newRequestQueue(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps2);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -68,7 +70,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 Toast.makeText(getApplicationContext(), "No se puede conectar " + error.toString(), Toast.LENGTH_LONG).show();
             }
         });
-
+        request.add(jsonObjectRequest);
     }
 
     private List cargarPuntos(JSONObject json) {
@@ -119,9 +121,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             mMap = googleMap;
 
             // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(-34, 151);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            //LatLng sydney = new LatLng(-34, 151);
+           // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+           //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         }
     }
