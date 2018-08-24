@@ -20,15 +20,16 @@ public class SplashActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Conexion conn;
 
-    ArrayList<LugaresVo>listaLugares;
+    ArrayList<LugaresVo> listaLugares;
     LugaresVo lugaresVo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-///////////////////////////////////////////////////////////////////
-       lugaresVo = new LugaresVo();
+        conn = new Conexion(getApplicationContext(), "mapas", null, 1);
         listaLugares = new ArrayList<>();
+///////////////////////////////////////////////////////////////////
+        lugaresVo = new LugaresVo();
         lugaresVo.setNombre("Centro Comercial Portal del Quindío.");
         lugaresVo.setDescripcionCorta("El Centro Comercial Portal del Quindio, ubicado en el norte de Armenia, es el centro comercial, más grande e importante del Quindío.");
         lugaresVo.setUbicacion("Av Bolivar # 19 Norte 46 Armenia");
@@ -101,11 +102,10 @@ public class SplashActivity extends AppCompatActivity {
         lugaresVo.setDescripcionLarga("EL Parque Los Arrieros es un lugar que ofrece servicios turísticos de recreación, esparcimiento y aprendizaje; en torno a la cultura de la arriería; a través de escenarios artísticos, culturales y áreas de entretenimiento que conforman un abanicó de opciones para que los visitantes, disfruten de una agradable experiencia en nuestras instalaciones.");
         listaLugares.add(lugaresVo);
 ///////////////////////////////////////////////////////////////////
-                conn = new Conexion(getApplicationContext(),"mapas",null,1);
         setContentView(R.layout.activity_splash);
 //////////////////////////HOTELES____HOTELES______HOTELES/////////////////////////////////
 ///////////////////////////////////////////////////////////////////
-        lugaresVo = new LugaresVo();
+       /* lugaresVo = new LugaresVo();
         lugaresVo.setNombre("Hotel Bolivar Plaza");
         lugaresVo.setDescripcionCorta("Categoría del hotel:3,5 estrella(s), Cantidad de habitaciones: 18 ");
         lugaresVo.setUbicacion("Dirección: Calle 21a No. 14-17, Armenia");
@@ -124,14 +124,7 @@ public class SplashActivity extends AppCompatActivity {
         lugaresVo.setDescripcionCorta("En el Restaurante El Roble encontrarás comida típica de la región con la mejor sazón");
         lugaresVo.setUbicacion("Dirección: Vía Armenia – Pereira");
         lugaresVo.setDescripcionLarga("En el Restaurante El Roble encontrarás comida típica de la región con la mejor sazón, y espacios para el esparcimiento familiar en nuestro Café Rockola y Parque Recreativo y Granja. El Roble es reconocido por su tradición gastronómica, sus amplios y verdes espacios para el entretenimiento familiar y su excelente ubicación, donde podrás vivir y sentir el paisaje cultural cafetero, apreciar el municipio de Salento y el nevado del Tolima. En el Restaurante El Roble encontrarás comida típica de la región con la mejor sazón, y espacios para el esparcimiento familiar en nuestro Café Rockola y Parque Recreativo y Granja.");
-        listaLugares.add(lugaresVo);
-///////////////////////////////////////////////////////////////////
-        lugaresVo = new LugaresVo();
-        lugaresVo.setNombre("La Fogata");
-        lugaresVo.setDescripcionCorta("El Restaurante La Fogata ubicado en la ciudad de Armenia Colombia, es catalogado como el mejor restaurante del Triángulo del Café ");
-        lugaresVo.setUbicacion("ubicado en el norte de Armenia. Quindio.");
-        lugaresVo.setDescripcionLarga("El Restaurante La Fogata ubicado en la ciudad de Armenia Colombia, es catalogado como el mejor restaurante del Triángulo del Café por diferentes medios especializados en gastronomía; El único sitio donde se destaca la constancia, la buena atención, el buen sabor y fidelidad de todos sus comensales. La Fogata está situada en el sector más dinámico de Armenia y por su ubicación se convierte en una bella isla urbana donde se disfrutan las más exquisitas sensaciones.");
-        listaLugares.add(lugaresVo);
+        listaLugares.add(lugaresVo);*/
 ///////////////////////////////////////////////////////////////////
         registroSitios();
         registroHoteles();
@@ -139,14 +132,15 @@ public class SplashActivity extends AppCompatActivity {
 ///////////////////////////////////////////////////////////////////
         CountDownTimer tiempo;
 
-        tiempo=new CountDownTimer(3000,1000) {
+        tiempo = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long l) {
 
             }
+
             @Override
             public void onFinish() {
-                Intent miIntent=new Intent(SplashActivity.this,MainActivity.class);
+                Intent miIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(miIntent);
                 finish();
             }
@@ -159,15 +153,15 @@ public class SplashActivity extends AppCompatActivity {
 
         db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        for (int i = 0; i< listaLugares.size() ;i++){
-            values.put(Utilidades.SITIOS_IMAGEN,R.drawable.sitio_panaca);
-            values.put(Utilidades.SITIOS_NOMBRE,listaLugares.get(i).getNombre());
-            values.put(Utilidades.SITIOS_DESCRIPCION_CORTA,listaLugares.get(i).getDescripcionCorta());
-            values.put(Utilidades.SITIOS_UBIBACION,listaLugares.get(i).getUbicacion());
-            values.put(Utilidades.SITIOS_DESCRIPCION_LARGA,listaLugares.get(i).getDescripcionLarga());
+        for (int i = 0; i < listaLugares.size(); i++) {
+            values.put(Utilidades.SITIOS_DESCRIPCION_LARGA, listaLugares.get(i).getDescripcionLarga());
+            values.put(Utilidades.SITIOS_DESCRIPCION_CORTA, listaLugares.get(i).getDescripcionCorta());
+            values.put(Utilidades.SITIOS_NOMBRE, listaLugares.get(i).getNombre());
+            values.put(Utilidades.SITIOS_UBIBACION, listaLugares.get(i).getUbicacion());
+            long registroExitoso = db.insert(Utilidades.TABLA_SITIOS, Utilidades.SITIOS_NOMBRE, values);
         }
 
-        long registroExitoso = db.insert(Utilidades.TABLA_SITIOS, Utilidades.SITIOS_NOMBRE, values);
+
         Toast.makeText(getApplicationContext(), "Registro Exitoso ", Toast.LENGTH_SHORT).show();
 
     }

@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:text="Se desarrollo una aplicación que permite mostrar la información turistica del departamento,
-\n\n
-Con la aplicación se pretende que los turistas tengan una herramienta para consultar los sitios turisticos."
+        android:text="BIENVENIDOS  TURIS APP\n\n
+Con esta aplicación podras ver informacion, localizacion y datos importantes de todos los siticos turisticos del quindio.\n
+esperamos que te guste"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="24dp" />

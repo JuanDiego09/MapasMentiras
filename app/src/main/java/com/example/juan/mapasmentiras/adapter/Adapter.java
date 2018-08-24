@@ -34,6 +34,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterHolderView> imp
         holder.imagen.setImageResource(listaLugares.get(position).getImagen());
         holder.nombre.setText(listaLugares.get(position).getNombre());
         holder.descripcion.setText(listaLugares.get(position).getDescripcionCorta());
+        holder.ubicacion.setText(listaLugares.get(position).getUbicacion());
     }
 
     @Override

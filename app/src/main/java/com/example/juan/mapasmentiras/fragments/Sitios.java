@@ -2,6 +2,8 @@ package com.example.juan.mapasmentiras.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,8 @@ import com.example.juan.mapasmentiras.R;
 import com.example.juan.mapasmentiras.adapter.Adapter;
 import com.example.juan.mapasmentiras.entidades.LugaresVo;
 import com.example.juan.mapasmentiras.entidades.Puente;
+import com.example.juan.mapasmentiras.utilidades.Conexion;
+import com.example.juan.mapasmentiras.utilidades.Utilidades;
 
 import java.util.ArrayList;
 
@@ -44,6 +48,9 @@ public class Sitios extends Fragment {
     LugaresVo lugaresVo;
     Puente miPuente;
     Activity activity;
+
+    SQLiteDatabase db;
+    Conexion conn;
 
     public Sitios() {
         // Required empty public constructor
@@ -81,6 +88,7 @@ public class Sitios extends Fragment {
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_sitios, container, false);
 
+        conn = new Conexion(getContext(), "mapas", null, 1);
         recyclerView=vista.findViewById(R.id.recyclerSitios);
         listaLugares=new ArrayList<>();
 
@@ -100,7 +108,19 @@ public class Sitios extends Fragment {
     }
 
     private void llenarArray() {
-        listaLugares.add(lugaresVo=new LugaresVo("Lugar 1","Descripcion Corta","Descripcion Larga","Ubicacion",R.drawable.interrogacion));
+        db = conn.getReadableDatabase();
+
+
+        Cursor cursor=db.rawQuery("SELECT * FROM "+ Utilidades.TABLA_SITIOS,null);
+
+        while (cursor.moveToNext()){
+            lugaresVo=new LugaresVo();
+            lugaresVo.setNombre(cursor.getString(0));
+            lugaresVo.setDescripcionCorta(cursor.getString(1));
+            lugaresVo.setDescripcionLarga(cursor.getString(2));
+            lugaresVo.setUbicacion(cursor.getString(3));
+            listaLugares.add(lugaresVo);
+        }
         Adapter miAdapter=new Adapter(listaLugares);
         recyclerView.setAdapter(miAdapter);
     }
