@@ -2,40 +2,39 @@ package com.example.juan.mapasmentiras.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.juan.mapasmentiras.R;
-import com.example.juan.mapasmentiras.adapter.Adapter;
 import com.example.juan.mapasmentiras.entidades.LugaresVo;
 import com.example.juan.mapasmentiras.entidades.Puente;
-import com.example.juan.mapasmentiras.utilidades.Conexion;
-import com.example.juan.mapasmentiras.utilidades.Utilidades;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Sitios.OnFragmentInteractionListener} interface
+ * {@link DetalleFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Sitios#newInstance} factory method to
+ * Use the {@link DetalleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Sitios extends Fragment {
+public class DetalleFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    TextView descripcion;
+    Activity activity;
+    Puente puente;
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -43,16 +42,7 @@ public class Sitios extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
-    ArrayList<LugaresVo> listaLugares;
-    LugaresVo lugaresVo;
-    Puente miPuente;
-    Activity activity;
-
-    SQLiteDatabase db;
-    Conexion conn;
-
-    public Sitios() {
+    public DetalleFragment() {
         // Required empty public constructor
     }
 
@@ -62,11 +52,11 @@ public class Sitios extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Sitios.
+     * @return A new instance of fragment DetalleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Sitios newInstance(String param1, String param2) {
-        Sitios fragment = new Sitios();
+    public static DetalleFragment newInstance(String param1, String param2) {
+        DetalleFragment fragment = new DetalleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,51 +76,16 @@ public class Sitios extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista = inflater.inflate(R.layout.fragment_sitios, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_detalle, container, false);
+        Bundle miBundle=getArguments();
 
-        conn = new Conexion(getContext(), "mapas", null, 1);
-        recyclerView=vista.findViewById(R.id.recyclerSitios);
-        listaLugares=new ArrayList<>();
+        LugaresVo miLugaresVo= (LugaresVo) miBundle.getSerializable("objeto");
 
-        llenarArray();
+        descripcion=view.findViewById(R.id.txtLarga);
 
-        FloatingActionButton fab = (FloatingActionButton) vista.findViewById(R.id.btnFlotanteSitios);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                miPuente.pantalla(1);
-            }
-        });
-
-        return vista;
-    }
-
-    private void llenarArray() {
-        db = conn.getReadableDatabase();
-
-
-        Cursor cursor=db.rawQuery("SELECT * FROM "+ Utilidades.TABLA_SITIOS,null);
-
-        while (cursor.moveToNext()){
-            lugaresVo=new LugaresVo();
-            lugaresVo.setNombre(cursor.getString(0));
-            lugaresVo.setDescripcionCorta(cursor.getString(1));
-            lugaresVo.setDescripcionLarga(cursor.getString(2));
-            lugaresVo.setUbicacion(cursor.getString(3));
-            listaLugares.add(lugaresVo);
-        }
-        final Adapter miAdapter=new Adapter(listaLugares);
-        recyclerView.setAdapter(miAdapter);
-
-
-        miAdapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                miPuente.enviar(1,  listaLugares.get(recyclerView.getChildAdapterPosition(view)));
-            }
-        });
+        descripcion.setText(miLugaresVo.getDescripcionLarga());
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -143,11 +98,12 @@ public class Sitios extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         if (context instanceof Activity){
             this.activity=(Activity) context;
-            miPuente=(Puente) activity;
+            this.puente=(Puente) activity;
         }
+
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

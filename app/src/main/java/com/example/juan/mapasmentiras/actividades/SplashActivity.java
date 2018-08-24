@@ -153,7 +153,7 @@ public class SplashActivity extends AppCompatActivity {
         db = conn.getWritableDatabase();
         db=conn.getReadableDatabase();
 
-        db.delete(Utilidades.CREAR_TABLA_SITIOS,"")
+        db.execSQL("delete from "+Utilidades.TABLA_SITIOS);
 
         ContentValues values = new ContentValues();
         for (int i = 0; i < listaLugares.size(); i++) {
@@ -163,9 +163,6 @@ public class SplashActivity extends AppCompatActivity {
             values.put(Utilidades.SITIOS_UBIBACION, listaLugares.get(i).getUbicacion());
             long registroExitoso = db.insert(Utilidades.TABLA_SITIOS, Utilidades.SITIOS_NOMBRE, values);
         }
-
-
-        Toast.makeText(getApplicationContext(), "Registro Exitoso ", Toast.LENGTH_SHORT).show();
 
     }
 

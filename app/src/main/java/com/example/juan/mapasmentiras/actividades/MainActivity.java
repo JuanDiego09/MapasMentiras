@@ -15,17 +15,22 @@ import android.view.MenuItem;
 
 import com.example.juan.mapasmentiras.R;
 import com.example.juan.mapasmentiras.entidades.AllFragments;
+import com.example.juan.mapasmentiras.entidades.LugaresVo;
 import com.example.juan.mapasmentiras.entidades.Puente;
+import com.example.juan.mapasmentiras.fragments.DetalleFragment;
 import com.example.juan.mapasmentiras.fragments.Hoteles;
 import com.example.juan.mapasmentiras.fragments.Inicio;
 import com.example.juan.mapasmentiras.fragments.Restaurantes;
 import com.example.juan.mapasmentiras.fragments.Sitios;
 
+import java.io.Serializable;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,AllFragments,Puente {
+        implements NavigationView.OnNavigationItemSelectedListener, AllFragments, Puente {
 
 
     Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +56,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragment=new Inicio();
-        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
+        fragment = new Inicio();
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, fragment).commit();
     }
 
     @Override
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity
             setTitle("Restaurantes");
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, fragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -120,7 +125,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void pantalla(int numero) {
-        Intent miIntent=new Intent(MainActivity.this,MapsActivity.class);
+        Intent miIntent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(miIntent);
+    }
+
+    @Override
+    public void enviar(int numero, LugaresVo objeto) {
+        switch (numero) {
+            case 1:
+                fragment = new DetalleFragment();
+                Bundle miBundle = new Bundle();
+                miBundle.putSerializable("objeto", objeto);
+                fragment.setArguments(miBundle);
+                break;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor, fragment).commit();
     }
 }

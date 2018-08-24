@@ -89,22 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(ubicacion).title("Ubicacion"));//icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_menu_share)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
         mMap.setMinZoomPreference(10);
-        agregarRuta();
     }
 
-    private void agregarRuta() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(4.545695136892776, -75.67256734597161)).title("ensayo"));
-
-        LatLng pos1,pos2;
-        pos1=new LatLng(4.531577482735009, -75.64214036690667);
-        pos2=new LatLng(4.621929466163072, -75.76083563173823);
-
-        PolylineOptions puntos=new PolylineOptions()
-                .add(new LatLng(4.5351079, -75.6731367))//usuario
-                .add(new LatLng(4.5358413, -75.6737588))
-                .add(new LatLng(4.5385233, -75.6708166))
-                .add(new LatLng(4.5365046, -75.6689944))
-                .add(new LatLng(4.548075499999999, -75.66137479999999)).width(10)//mascota
-                .color(Color.RED);
-    }
 }

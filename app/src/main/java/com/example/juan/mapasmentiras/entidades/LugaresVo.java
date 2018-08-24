@@ -2,7 +2,9 @@ package com.example.juan.mapasmentiras.entidades;
 
 import android.graphics.drawable.Drawable;
 
-public class LugaresVo {
+import java.io.Serializable;
+
+public class LugaresVo implements Serializable {
 
     private String nombre;
     private String descripcionCorta;
@@ -57,7 +59,7 @@ public class LugaresVo {
         return imagen;
     }
 
-    public void setImagen(byte imagen) {
+    public void setImagen(int imagen) {
         this.imagen = imagen;
     }
 }
