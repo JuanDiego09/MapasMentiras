@@ -11,6 +11,8 @@ public class LugaresVo implements Serializable {
     private String descripcionLarga;
     private String Ubicacion;
     private int imagen;
+    private double latitud;
+    private double longitud;
 
     public LugaresVo(String nombre, String descripcionCorta, String descripcionLarga, String ubicacion, int imagen) {
         this.nombre = nombre;
@@ -61,5 +63,21 @@ public class LugaresVo implements Serializable {
 
     public void setImagen(int imagen) {
         this.imagen = imagen;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 }

@@ -97,7 +97,7 @@ public class DetalleFragment extends Fragment {
                         .setAction("Action", null).show();
                 Intent intent = new Intent(getContext(), MapsActivity2.class);
                 startActivity(intent);
-                ////Mono mo
+
             }
         });
 

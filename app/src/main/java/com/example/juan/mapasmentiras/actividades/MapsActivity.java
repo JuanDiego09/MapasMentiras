@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.juan.mapasmentiras.R;
+import com.example.juan.mapasmentiras.entidades.LugaresVo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,6 +16,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -23,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        System.out.println("entra *****************++");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -43,13 +47,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        ArrayList<LugaresVo> lugares=new ArrayList<>();
+        LugaresVo miLugaresVo;
+        for (int a=0;a<10;a++){
+            miLugaresVo=new LugaresVo();
+            miLugaresVo.setLatitud(4.545695136892776);
+            miLugaresVo.setLongitud(-75.67256734597161);
+            miLugaresVo.setNombre("Centro Comercial Portal del Quindío "+a);
+            lugares.add(miLugaresVo);
+        }
+        LatLng centro;
+        for (int i=0;i<lugares.size();i++){
+            centro= new LatLng(lugares.get(i).getLatitud(), -lugares.get(i).getLatitud());
+            mMap.addMarker(new MarkerOptions().position(centro).title(lugares.get(i).getNombre()+i));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(centro));
+        }
 
         // Add a marker in Sydney and move the camera
-        LatLng centro = new LatLng(4.545695136892776, -75.67256734597161);
+       /* LatLng centro = new LatLng(4.545695136892776, -75.67256734597161);
         mMap.addMarker(new MarkerOptions().position(centro).title("Centro Comercial Portal del Quindío "));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(centro));
-
-        LatLng unicentro = new LatLng(4.537481262607865, -75.66655919777826);
+*/
+        /*LatLng unicentro = new LatLng(4.537481262607865, -75.66655919777826);
         mMap.addMarker(new MarkerOptions().position(unicentro).title("Unicentro - Armenia."));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(unicentro));
 
@@ -87,8 +106,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng ubicacion = new LatLng(4.5410252, -75.66828399999997);
         mMap.addMarker(new MarkerOptions().position(ubicacion).title("Ubicacion"));//icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_menu_share)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
-        mMap.setMinZoomPreference(10);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));*/
+       // mMap.setMinZoomPreference(10);
     }
 
 }

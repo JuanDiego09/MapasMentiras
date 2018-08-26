@@ -42,8 +42,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     String lactitudI = "4.596616112679607";
     String longitudI = "-74.07291412353516";
 
-    String lactitudF = "3.7162636347405167";
-    String longitudF = "-74.0423583984375";
+    String lactitudF = "-0.3534564348305434";
+    String longitudF = "-78.43953308300695";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     private void cargarWebservices(String lactitudI, String longitudI, String lactitudF, String longitudF) {
         //String url="https://maps.googleapis.com/maps/api/directions/json?origin=4.547195915737696,-75.66195130348206&destination=4.540984,-75.668126";
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
+        String url="https://maps.googleapis.com/maps/api/directions/json?origin="+lactitudI+","+longitudI+"&destination="+lactitudF+","+longitudF;
+        //String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + lactitudI + "," + longitudI + "&destination=" + lactitudF + "," + longitudF;
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -122,9 +123,15 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             mMap = googleMap;
 
             // Add a marker in Sydney and move the camera
-            //LatLng sydney = new LatLng(-34, 151);
-           // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-           //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+           LatLng sydney = new LatLng( 4.596616112679607, -74.07291412353516);
+           mMap.addMarker(new MarkerOptions().position(sydney));
+           mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+            LatLng sydney2 = new LatLng( -0.3534564348305434, -78.43953308300695);
+            mMap.addMarker(new MarkerOptions().position(sydney2));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney2));
+
+            mMap.setMinZoomPreference(5);
 
         }
     }
