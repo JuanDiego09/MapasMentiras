@@ -4,61 +4,60 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/contenedor"
-        android:layout_margin="5dp"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:padding="10dp">
+        android:id="@+id/card"
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/campoImagen"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/side_nav_bar" />
-
-        <TextView
-            android:id="@+id/nombre"
+        <GridLayout
+            android:id="@+id/contenedor"
             android:layout_width="match_parent"
-            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/campoImagen"
-            android:layout_toEndOf="@+id/campoImagen"
-            android:text="Nombre"
-            android:layout_marginBottom="10dp"
-            android:textColor="#000"
-            android:textSize="25sp" />
+            android:layout_margin="5dp"
+            android:columnCount="1"
+            android:background="@color/colorPrimaryDark"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/descripcionCorta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nombre"
-            android:layout_toEndOf="@+id/campoImagen"
-            android:text="Nombre"
-            android:layout_marginBottom="10dp"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/campoImagen"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/side_nav_bar" />
 
-        <TextView
-            android:id="@+id/ubicacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/descripcionCorta"
-            android:layout_toEndOf="@+id/campoImagen"
-            android:text="Nombre"
-            android:layout_marginBottom="10dp"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/campoImagen"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/campoImagen"
+                android:text="Nombre"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="25sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/descripcionCorta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nombre"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/campoImagen"
+                android:text="Nombre"
+                android:textColor="#000"
+                android:textSize="20sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/contenedor"
-        android:layout_marginTop="5dp"
-        android:background="@color/colorAccent"></LinearLayout>
+            <TextView
+                android:id="@+id/ubicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/descripcionCorta"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/campoImagen"
+                android:text="Nombre"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+        </GridLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
