@@ -1,18 +1,18 @@
 package com.example.juan.mapasmentiras;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -32,62 +32,86 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.juan.mapasmentiras.actividades.MainActivity;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class Map extends AppCompatActivity {
-    TextView mensaje1;
-    TextView mensaje2, txtlatitud, txtlongitud;
-    Button buca;
-    double webLactitud, webLongitud;
-    Location instLoc = new Location("punto1");
-    double distance;
-    int capturaNumero = 0;
+public class Mapa extends AppCompatActivity {
     RequestQueue request;
-    LinearLayout colores;
+
+    LinearLayout colr;
+    LatLng sydney;
+    boolean enviar = false;
+    CountDownTimer timer;
+
+    String lactitudI = "";
+    String longitudI = "";
+
+    Location instLoc = new Location("punto1");
+    float distance;
+
+    TextView tiempo, lat, lon, distancia;
+    Button buscar;
+
+    double webLactitud;
+    double webLongitud;
+    int enviado = 0;
+
+    LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         request = Volley.newRequestQueue(getApplicationContext());
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mapa);
 
-        setContentView(R.layout.activity_map);
-        mensaje1 = (TextView) findViewById(R.id.mensaje_id);
-        mensaje2 = (TextView) findViewById(R.id.mensaje_id2);
-        txtlatitud = findViewById(R.id.latitud);
-        txtlongitud = findViewById(R.id.longitud);
-        buca = findViewById(R.id.buscar);
-        colores = findViewById(R.id.colores);
+        tiempo = findViewById(R.id.tiempo);
+        lat = findViewById(R.id.latitud);
+        lon = findViewById(R.id.longitud);
+        buscar = findViewById(R.id.buscar);
+        distancia = findViewById(R.id.dista);
+        //tiempo();
 
-        buca.setOnClickListener(new View.OnClickListener() {
+        buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buscar();
+//                timer.cancel();
+                enviado = 1;
+                locationStart();
             }
         });
 
     }
 
+    private void tiempo() {
+        timer = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long l) {
+                //Toast.makeText(getApplicationContext(), "tiempo " + l / 1000, Toast.LENGTH_SHORT).show();
+                tiempo.setText("Tiempo " + l / 1000);
+            }
 
-    private void buscar() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            Toast.makeText(this, "eNTRO 1", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "eNTRO 2", Toast.LENGTH_SHORT).show();
-            locationStart();
-        }
+            @Override
+            public void onFinish() {
+                timer.cancel();
+                locationStart();
+                enviar = true;
+            }
+        };
+        timer.start();
     }
 
     private void locationStart() {
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Localizacion Local = new Localizacion();
-        Local.setMainActivity(this);
+        Mapa.Localizacion Local = new Mapa.Localizacion();
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -101,66 +125,44 @@ public class Map extends AppCompatActivity {
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1000) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationStart();
-                return;
-            }
-        }
-    }
 
     /* Aqui empieza la Clase Localizacion */
     public class Localizacion implements LocationListener {
-
-        Map mainActivity;
-
-        public Map getMainActivity() {
-            return mainActivity;
-        }
-
-        public void setMainActivity(Map mainActivity) {
-            this.mainActivity = mainActivity;
-        }
-
+        @SuppressLint("LongLogTag")
         @Override
         public void onLocationChanged(Location loc) {
             // Este metodo se ejecuta cada vez que el GPS recibe nuevas coordenadas
             // debido a la deteccion de un cambio de ubicacion
-            loc.getLatitude();
-            loc.getLongitude();
-            if (capturaNumero == 0) {
-                webLactitud = loc.getLatitude();
-                webLongitud = loc.getLongitude();
-                txtlatitud.setText("primera" + webLactitud);
-                txtlongitud.setText("primera" + webLongitud);
-                capturaNumero++;
+
+
+            if (enviado == 1) {
+
+                lactitudI = "" + loc.getLatitude();
+                longitudI = "" + loc.getLongitude();
+                enviado = 1;
+                LatLng point = new LatLng(webLactitud, webLongitud);
+                instLoc.setLatitude(point.latitude);
+                instLoc.setLongitude(point.longitude);
+                distance = loc.distanceTo(instLoc);
+                lat.setText("Latitud " + lactitudI);
+                lon.setText("Longitud " + longitudI);
+                distancia.setText("Distancia " + distance);
+                cargarWebService(lactitudI, longitudI);
+            } else {
+                Toast.makeText(getApplicationContext(), " Cambio 0 ", Toast.LENGTH_LONG).show();
             }
-            String Text = "Mi ubicacion actual es: " + "\n Lat = "
-                    + loc.getLatitude() + "\n Long = " + loc.getLongitude();
-            mensaje1.setText(Text);
-
-            LatLng point = new LatLng(webLactitud, webLongitud);
-            instLoc.setLatitude(point.latitude);
-            instLoc.setLongitude(point.longitude);
-            distance = 0;
-            distance = loc.distanceTo(instLoc);
-
-            cambio(distance);
-            mensaje2.setText(capturaNumero + " Distancia " + Double.toString(distance));
         }
-
 
         @Override
         public void onProviderDisabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es desactivado
-            mensaje1.setText("GPS Desactivado");
+            // mensaje1.setText("GPS Desactivado");
         }
 
         @Override
         public void onProviderEnabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es activado
-            mensaje1.setText("GPS Activado");
+            //mensaje1.setText("GPS Activado");
         }
 
         @Override
@@ -179,23 +181,16 @@ public class Map extends AppCompatActivity {
         }
     }
 
-    private void cambio(double distance) {
-        if (distance>=500){
-            colores.setBackgroundColor(Color.BLUE);
-            capturaNumero=0;
-        }else {
-            colores.setBackgroundColor(Color.YELLOW);
-        }
-    }
-
     private void cargarWebService(final String longitudIm, final String longitudFm) {
         String url;
-        url = "http://cursosena.xyz/registro.php";
+        url = "https://contaniif.club/movil/gps.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                enviar = false;
                 //timer.start();
+                enviado = 0;
                 webLactitud = Double.parseDouble(longitudIm);
                 webLongitud = Double.parseDouble(longitudFm);
                 Toast.makeText(getApplicationContext(), "Termino", Toast.LENGTH_SHORT).show();
@@ -208,9 +203,9 @@ public class Map extends AppCompatActivity {
 
         }) {
             @Override
-            protected java.util.Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() throws AuthFailureError {
 
-                java.util.Map<String, String> parametros = new HashMap<>();
+                Map<String, String> parametros = new HashMap<>();
                 parametros.put("latitud", longitudIm);
                 parametros.put("longitud", longitudFm);
 
@@ -222,5 +217,11 @@ public class Map extends AppCompatActivity {
         request.add(stringRequest);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        finish();
+        timer.cancel();
+    }
 }
